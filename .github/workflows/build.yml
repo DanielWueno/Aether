@@ -1,0 +1,39 @@
+name: Aether WPF Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 10
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x' # Targeting the framework used in the project
+
+    - name: Restore dependencies
+      run: dotnet restore Aether.slnx
+
+    - name: Build Aether.Desktop (Release)
+      run: dotnet build src/Aether.Desktop/Aether.Desktop.csproj -c Release --no-restore
+
+    - name: Publish Aether.Desktop (Self-Contained)
+      run: dotnet publish src/Aether.Desktop/Aether.Desktop.csproj -c Release -r win-x64 --self-contained false -o ./publish
+
+    - name: Zip Build Output
+      run: Compress-Archive -Path ./publish/* -DestinationPath Aether-Release-win-x64.zip
+
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Aether-Release
+        path: Aether-Release-win-x64.zip
