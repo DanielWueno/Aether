@@ -1,0 +1,52 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Aether.Maui.MainPage"
+             Title="Aether Cross-Platform">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="25" Padding="30,0" VerticalOptions="Center">
+
+            <Label Text="AETHER"
+                   SemanticProperties.HeadingLevel="Level1"
+                   FontSize="32"
+                   HorizontalOptions="Center"
+                   FontAttributes="Bold"/>
+
+            <Label Text="Universal Reverse Tethering Framework"
+                   SemanticProperties.HeadingLevel="Level2"
+                   SemanticProperties.Description="Universal Reverse Tethering Framework"
+                   FontSize="18"
+                   HorizontalOptions="Center" 
+                   TextColor="Gray"/>
+
+            <Frame BackgroundColor="#F0F0F0" CornerRadius="8" Padding="20">
+                <VerticalStackLayout Spacing="5">
+                    <Label x:Name="StatusText" Text="Status: Disconnected" HorizontalOptions="Center" FontAttributes="Bold" TextColor="Black"/>
+                    <Label x:Name="DeviceText" Text="No device detected" HorizontalOptions="Center" TextColor="Gray"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                <Button x:Name="RefreshBtn"
+                        Text="Refresh Devices"
+                        Clicked="OnRefreshClicked"
+                        BackgroundColor="LightGray"
+                        TextColor="Black"/>
+                        
+                <Button x:Name="ToggleBtn"
+                        Text="Start Tethering"
+                        SemanticProperties.Hint="Starts the reverse tethering process"
+                        Clicked="OnToggleClicked"
+                        HorizontalOptions="Center"
+                        BackgroundColor="#0078D4"/>
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" Margin="0,20,0,0">
+                <Label Text="Manual Proxy:" VerticalOptions="Center" TextColor="Gray"/>
+                <Entry x:Name="ManualProxyEntry" Placeholder="e.g. 192.168.1.5:8080" WidthRequest="200"/>
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
