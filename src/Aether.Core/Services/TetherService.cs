@@ -12,6 +12,7 @@ public class TetherService : ITetherService, IDisposable
     private readonly int _proxyPort = 8888;
     private bool _isRunning;
     private DeviceData? _activeDevice;
+    private DeviceMonitor? _deviceMonitor;
 
     public string ManualProxy { get; set; } = string.Empty;
 
@@ -23,6 +24,42 @@ public class TetherService : ITetherService, IDisposable
         _proxyManager = proxyManager;
         
         _adbManager.StartServer();
+        StartDeviceMonitor();
+    }
+
+    private void StartDeviceMonitor()
+    {
+        try
+        {
+            var adbSocket = new AdbSocket(new System.Net.IPEndPoint(System.Net.IPAddress.Loopback, AdbClient.AdbServerPort));
+            _deviceMonitor = new DeviceMonitor(adbSocket);
+            _deviceMonitor.DeviceDisconnected += OnDeviceDisconnected;
+            _deviceMonitor.Start();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"[Aether] Could not start DeviceMonitor: {ex.Message}");
+        }
+    }
+
+    private void OnDeviceDisconnected(object? sender, DeviceDataEventArgs e)
+    {
+        if (_activeDevice != null && e.Device.Serial == _activeDevice.Serial)
+        {
+            Debug.WriteLine($"[Aether] Device {_activeDevice.Serial} was physically disconnected.");
+            // We cannot clean the device settings because it's disconnected,
+            // but we must clean the PC state and UI.
+            _ = StopLocalStateAsync();
+        }
+    }
+
+    private async Task StopLocalStateAsync()
+    {
+        _proxyManager.Stop();
+        _isRunning = false;
+        _activeDevice = null;
+        NotifyStatus(ConnectionStatus.Disconnected);
+        await Task.CompletedTask;
     }
 
     public async Task StartAsync(string deviceSerial)
