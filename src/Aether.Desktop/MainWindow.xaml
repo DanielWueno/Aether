@@ -1,0 +1,46 @@
+<Window x:Class="Aether.Desktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        Title="Aether Stealth Tether" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen"
+        ShowInTaskbar="True" Visibility="Visible">
+    <Grid>
+        <tb:TaskbarIcon x:Name="MyNotifyIcon"
+                        ToolTipText="Aether: Stealth Reverse Tethering">
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Start Tethering" Click="OnStartTethering" x:Name="MenuStart"/>
+                    <MenuItem Header="Stop Tethering" Click="OnStopTethering" x:Name="MenuStop" Visibility="Collapsed"/>
+                    <Separator/>
+                    <MenuItem Header="Exit" Click="OnExit"/>
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
+        
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="AETHER" FontSize="36" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center"/>
+            <TextBlock Text="Stealth Reverse Tethering Framework" FontSize="14" Foreground="#666" HorizontalAlignment="Center"/>
+            
+            <Border Background="#f0f0f0" CornerRadius="8" Padding="20" Margin="0,30,0,0">
+                <StackPanel>
+                    <TextBlock x:Name="StatusText" Text="Status: Disconnected" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="DeviceText" Text="No device detected" Margin="0,5,0,0" Foreground="#888" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Orientation="Horizontal" Margin="0,30,0,0" HorizontalAlignment="Center">
+                <Button Content="Diagnostics" Click="OnDiagnostics" Padding="15,8" Margin="0,0,10,0" Cursor="Hand"/>
+                <Button Content="Refresh Devices" Click="OnRefreshDevices" Padding="15,8" Margin="0,0,10,0" Cursor="Hand"/>
+                <Button x:Name="BtnToggle" Content="Start Tethering" Click="OnStartTethering" Padding="20,8" Background="#0078d4" Foreground="White" FontWeight="Bold" Cursor="Hand"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Center">
+                <TextBlock Text="Corp Proxy (Optional): " VerticalAlignment="Center" Foreground="#666"/>
+                <TextBox x:Name="TxtManualProxy" Width="150" Padding="2" ToolTip="e.g. 192.168.1.50:8080"/>
+            </StackPanel>
+            
+            <Button Content="Hide to System Tray" Click="OnHideToTray" Margin="0,20,0,0" Background="Transparent" BorderThickness="0" Foreground="#0078d4" Cursor="Hand"/>
+        </StackPanel>
+    </Grid>
+</Window>

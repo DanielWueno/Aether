@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Aether.Core/Aether.Core.csproj" />
+    <Project Path="src/Aether.Desktop/Aether.Desktop.csproj" />
+    <Project Path="src/Aether.Shared/Aether.Shared.csproj" />
+  </Folder>
+</Solution>
